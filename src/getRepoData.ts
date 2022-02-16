@@ -1,4 +1,5 @@
-import axios, { AxiosError } from "axios";
+import { Octokit } from '@octokit/core';
+import { Endpoints } from '@octokit/types';
 import { FormValues } from "./GitHubUrlForm";
 
 export interface ResponseData{
@@ -8,27 +9,36 @@ export interface ResponseData{
         limit: number;
         reset: Date;
     };
-    data?: any;
+    data?: Endpoints["GET /repos/{owner}/{repo}/commits"]["response"]["data"];
 }
 
 const getRepoData: (values: FormValues) => Promise<ResponseData> = async (values) => {
-    let response
+    const octokit = new Octokit();
+    const parts = values.url.split('/');
+    let response;
     try {
-        response = await axios.get(`https://blog.spectrocoin.com/wp-json/wp/v2/posts`);
+        response = await octokit.request('GET /repos/{owner}/{repo}/commits', {
+            owner: parts[0],
+            repo: parts[1]
+        })
     } catch (error) {
+        console.log("RADAU ERRORA", error)
         return {
             success: false,
         };
     }
 
     console.log(response);
+    const remaining = response.headers['x-ratelimit-remaining'];
+    const limit = response.headers['x-ratelimit-limit'];
+    const reset = response.headers['x-ratelimit-reset'];
 
     return {
         success: true,
         requests: {
-            remaining: parseInt(response.headers['x-ratelimit-remaining']),
-            limit: parseInt(response.headers['x-ratelimit-limit']),
-            reset: new Date(parseInt(response.headers['x-ratelimit-reset']) * 1000),
+            remaining: remaining ? parseInt(remaining) : -1,
+            limit: limit ? parseInt(limit) : -1,
+            reset: reset ? new Date(parseInt(reset) * 1000) : new Date(0),
         },
         data: response.data
     };

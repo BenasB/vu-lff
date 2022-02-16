@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Form, InputGroup, FormControl, Button, Spinner, Alert } from 'react-bootstrap';
+import CommitTable from './CommitTable';
 import getRepoData, { ResponseData } from './getRepoData';
 
 interface FormData<T>{
@@ -94,9 +95,13 @@ const GitHubUrlForm: React.FC = () => {
       </Spinner>
       </>}
       {submitted && response && <>
-        {response.success && <Alert variant='info'>
+        {response.success && response.data && response.requests && <>
+          <Alert variant='info'>
             Requests left: {response.requests?.remaining}/{response.requests?.limit}. They will reset on {response.requests?.reset.toTimeString()}
-          </Alert>}
+          </Alert>
+          <CommitTable messages={response.data.map(c => c.commit.message)}/>
+        </>
+        }
         {!response.success && <Alert variant='danger'>
             <Alert.Heading>Oh snap! You got an error :/</Alert.Heading>
             Failed to get the repository at <code><a href={`https://github.com/${values.url}`}>{`https://github.com/${values.url}`}</a></code>
