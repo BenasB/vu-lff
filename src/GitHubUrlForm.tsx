@@ -15,7 +15,7 @@ const GitHubUrlForm: React.FC = () => {
         </Button>
       </InputGroup>
     </Form>
-    )
+  )
 }
 
 export default GitHubUrlForm;
