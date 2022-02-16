@@ -6,7 +6,13 @@ const FAQ: React.FC = () => {
     <>
       <h3>Frequently Asked Questions</h3>
       <Accordion>
-        <Accordion.Item eventKey="0">
+      <Accordion.Item eventKey="0">
+          <Accordion.Header>What's an LLF?</Accordion.Header>
+          <Accordion.Body>
+            An LFF is an acronym for the Lithuanian <i>Laiko Fiksavimo Forma</i> which translates to <i>Time Tracking Form</i>. This document keeps track of your progress while doing a programming task and is required for some module tasks at Vilnius University.
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="1">
           <Accordion.Header>How does this work?</Accordion.Header>
           <Accordion.Body>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -18,7 +24,7 @@ const FAQ: React.FC = () => {
             est laborum.
           </Accordion.Body>
         </Accordion.Item>
-        <Accordion.Item eventKey="1">
+        <Accordion.Item eventKey="2">
           <Accordion.Header>I'm getting a rate limit error</Accordion.Header>
           <Accordion.Body>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -30,7 +36,7 @@ const FAQ: React.FC = () => {
             est laborum.
           </Accordion.Body>
         </Accordion.Item>
-        <Accordion.Item eventKey="2">
+        <Accordion.Item eventKey="3">
           <Accordion.Header>Can I contribute?</Accordion.Header>
           <Accordion.Body>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
