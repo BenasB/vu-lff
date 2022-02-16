@@ -1,11 +1,16 @@
 import React from 'react';
-import Alert from 'react-bootstrap/Alert';
+import { Container, Stack } from 'react-bootstrap';
+import GitHubUrlForm from './GitHubUrlForm';
 
 const App: React.FC = () => {
   return (
     <>
-      <h1>VU-LFF</h1>
-      <Alert variant='success'>VU-LFF</Alert>
+    <Container>
+      <Stack gap={3}>
+        <h1 className='text-center mt-5'>VU LFF</h1>
+        <GitHubUrlForm/>
+      </Stack>
+    </Container>
     </>
   );
 }
