@@ -104,7 +104,7 @@ const GitHubUrlForm: React.FC = () => {
         }
         {!response.success && <Alert variant='danger'>
             <Alert.Heading>Oh snap! You got an error :/</Alert.Heading>
-            Failed to get the repository at <code><a href={`https://github.com/${values.url}`}>{`https://github.com/${values.url}`}</a></code>
+            Failed to get the repository at <code><a href={`https://github.com/${response.startingUrl}`}>{`https://github.com/${response.startingUrl}`}</a></code> Are you sure it exists?
           </Alert>}
       </>}
     </>

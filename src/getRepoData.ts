@@ -3,6 +3,7 @@ import { Endpoints } from '@octokit/types';
 import { FormValues } from "./GitHubUrlForm";
 
 export interface ResponseData{
+    startingUrl: string;
     success: boolean;
     requests?: {
         remaining: number;
@@ -17,24 +18,24 @@ const getRepoData: (values: FormValues) => Promise<ResponseData> = async (values
     const parts = values.url.split('/');
     let response;
     try {
-        response = await octokit.request('GET /repos/{owner}/{repo}/commits', {
+        response = await octokit.request('GET /repos/{owner}/{repo}/commits?per_page=100', {
             owner: parts[0],
             repo: parts[1]
-        })
+        });
     } catch (error) {
-        console.log("RADAU ERRORA", error)
         return {
             success: false,
+            startingUrl: values.url
         };
     }
 
-    console.log(response);
     const remaining = response.headers['x-ratelimit-remaining'];
     const limit = response.headers['x-ratelimit-limit'];
     const reset = response.headers['x-ratelimit-reset'];
 
     return {
         success: true,
+        startingUrl: values.url,
         requests: {
             remaining: remaining ? parseInt(remaining) : -1,
             limit: limit ? parseInt(limit) : -1,
