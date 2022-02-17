@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Form, InputGroup, FormControl, Button, Spinner, Alert } from 'react-bootstrap';
 import CommitTable from './CommitTable';
-import getRepoData, { ResponseData } from './getRepoData';
+import getRepoData, { ResponseData } from '../utils/getRepoData';
 
 interface FormData<T>{
   [key: string]: T;

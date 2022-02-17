@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container, Stack } from 'react-bootstrap';
-import FAQ from './FAQ';
-import Footer from './Footer';
-import GitHubUrlForm from './GitHubUrlForm';
+import FAQ from './components/FAQ';
+import Footer from './components/Footer';
+import GitHubUrlForm from './components/GitHubUrlForm';
 
 const App: React.FC = () => {
   return (

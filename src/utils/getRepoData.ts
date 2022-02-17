@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/core';
 import { Endpoints } from '@octokit/types';
-import { FormValues } from "./GitHubUrlForm";
+import { FormValues } from "../components/GitHubUrlForm";
 
 export interface ResponseData{
     startingUrl: string;

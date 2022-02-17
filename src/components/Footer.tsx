@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Container } from 'react-bootstrap';
-import { ReactComponent as Logo } from './logo.svg';
+import { ReactComponent as Logo } from '../assets/logo.svg';
 
 const Footer: React.FC = () => {
   return (
