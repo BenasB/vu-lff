@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Form, InputGroup, FormControl, Button, Spinner, Alert } from 'react-bootstrap';
-import CommitTable from './CommitTable';
-import getRepoData, { ResponseData } from '../utils/getRepoData';
+import getRepoData, { ResponseData } from '../helpers/getRepoData';
+import ResponseDataHandler from './ResponseDataHandler';
 
 interface FormData<T>{
   [key: string]: T;
@@ -99,7 +99,7 @@ const GitHubUrlForm: React.FC = () => {
           <Alert variant='info'>
             Requests left: {response.requests?.remaining}/{response.requests?.limit}. They will reset on {response.requests?.reset.toTimeString()}
           </Alert>
-          <CommitTable messages={response.data.map(c => c.commit.message)}/>
+          <ResponseDataHandler {...response} />
         </>
         }
         {!response.success && <Alert variant='danger'>
