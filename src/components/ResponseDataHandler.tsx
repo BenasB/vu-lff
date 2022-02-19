@@ -26,7 +26,7 @@ const ResponseDataHandler: React.FC<ResponseData> = (response) => {
       return ( 
         {
           message: c.commit.message,
-          date: c.commit.committer?.date ? new Date(Date.parse(c.commit.committer.date)) : new Date(0),
+          date: c.commit.author?.date ? new Date(Date.parse(c.commit.author.date)) : new Date(0),
         }
       )
     }
