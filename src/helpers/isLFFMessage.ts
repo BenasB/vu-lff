@@ -1,5 +1,5 @@
 const isLFFMessage: (message: string) => boolean = (message) => {
-  return message.slice(0,3) === 'LFF';
+  return message.trimStart().startsWith("LFF:");
 }
 
 export default isLFFMessage;
