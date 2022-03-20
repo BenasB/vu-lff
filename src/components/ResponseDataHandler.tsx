@@ -13,7 +13,7 @@ export interface LFFEntry {
   date: string;
   from: string;
   to: string;
-  disturbances?: string;
+  disturbances?: string[];
   time: string;
   activity: string;
   comments?: string;

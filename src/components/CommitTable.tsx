@@ -27,7 +27,9 @@ const CommitTable: React.FC<Props> = ({entries}) => {
                 <td>{entry.date}</td>
                 <td>{entry.from}</td>
                 <td>{entry.to}</td>
-                <td>{entry.disturbances}</td>
+                <td>
+                {entry.disturbances?.map(d => <div>{d}</div>)}
+                </td>
                 <td>{entry.time}</td>
                 <td>{entry.activity}</td>
                 <td>{entry.comments}</td>

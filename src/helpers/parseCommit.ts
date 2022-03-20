@@ -1,10 +1,11 @@
 import { Commit, LFFEntry } from "../components/ResponseDataHandler";
 import CONSTANTS from "./constants";
+import getDurationString from "./getDurationString";
 import getTimeString from "./getTimeString";
 import parse, { BrackedParseData } from "./parser";
 
 interface Disturbance {
-  time: number;
+  duration: number;
   reason: string;
 }
 
@@ -36,7 +37,7 @@ const parseDisturbances: (bracketData: BrackedParseData[]) => Disturbance[] = (b
 
     if (data.arguments.length === 2)
       results.push({
-        time: Date.parse('1970-01-01T' + data.arguments[0] + 'Z'),
+        duration: Date.parse('1970-01-01T' + data.arguments[0] + 'Z'),
         reason: data.arguments[1]
       })
   }
@@ -61,7 +62,7 @@ const parseCommit: (commit: Commit, previousCommit: Commit | null) => LFFEntry =
   const fromDate: Date | undefined = parseStartDate(bracketData, commit) || previousCommit?.date || undefined;
   const toDate: Date = commit.date;
   const disturbances: Disturbance[] = parseDisturbances(bracketData);
-  const totalDisturbanceTime: number = disturbances.reduce<number>((all, curr) => all += curr.time, 0);
+  const totalDisturbanceTime: number = disturbances.reduce<number>((all, curr) => all += curr.duration, 0);
 
   const entry: LFFEntry = {
     date: fromDate && fromDate.getDate() !== toDate.getDate() ? 
@@ -69,8 +70,8 @@ const parseCommit: (commit: Commit, previousCommit: Commit | null) => LFFEntry =
       : toDate.toLocaleDateString(CONSTANTS.LOCALE),
     from: fromDate ? getTimeString(fromDate) : notDeterminedMark,
     to: getTimeString(toDate),
-    disturbances: new Date(totalDisturbanceTime).toISOString().slice(11, 16),
-    time: fromDate ? new Date(toDate.getTime() - fromDate.getTime() - totalDisturbanceTime).toISOString().slice(11, 16) : notDeterminedMark,
+    disturbances: disturbances.map(d => `${d.reason} ${getDurationString(d.duration)}`),
+    time: fromDate ? getDurationString(toDate.getTime() - fromDate.getTime() - totalDisturbanceTime) : notDeterminedMark,
     activity: parseActivity(messageWithoutBracketData) || notParsedMark,
     comments: parseComments(messageWithoutBracketData, bracketData),
   }
