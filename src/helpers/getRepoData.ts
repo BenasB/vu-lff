@@ -21,7 +21,8 @@ const getRepoData: (values: FormValues) => Promise<ResponseData> = async (values
     response = await octokit.request('GET /repos/{owner}/{repo}/commits', {
       owner: parts[0],
       repo: parts[1],
-      per_page: 100
+      per_page: 100,
+      since: values.since ? new Date(values.since).toISOString() : undefined
     });
   } catch (error) {
     return {

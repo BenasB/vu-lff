@@ -1,6 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Form, InputGroup, FormControl, Button, Spinner, Alert } from 'react-bootstrap';
-import CONSTANTS from '../helpers/constants';
 import getRepoData, { ResponseData } from '../helpers/getRepoData';
 import ResponseDataHandler from './ResponseDataHandler';
 
@@ -50,8 +49,6 @@ const GitHubUrlForm: React.FC = () => {
       url: !isValidGithubRepoUrl(repoPath),
       since: !isValidSinceDate(sinceDate)
     };
-
-    console.log(formErrors);
 
     setErrors(formErrors);
     event.preventDefault();
