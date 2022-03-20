@@ -18,9 +18,10 @@ const getRepoData: (values: FormValues) => Promise<ResponseData> = async (values
   const parts = values.url.split('/');
   let response;
   try {
-    response = await octokit.request('GET /repos/{owner}/{repo}/commits?per_page=100', {
+    response = await octokit.request('GET /repos/{owner}/{repo}/commits', {
       owner: parts[0],
-      repo: parts[1]
+      repo: parts[1],
+      per_page: 100
     });
   } catch (error) {
     return {

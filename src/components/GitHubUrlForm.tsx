@@ -1,15 +1,22 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Form, InputGroup, FormControl, Button, Spinner, Alert } from 'react-bootstrap';
+import CONSTANTS from '../helpers/constants';
 import getRepoData, { ResponseData } from '../helpers/getRepoData';
 import ResponseDataHandler from './ResponseDataHandler';
 
 interface FormData<T>{
-  [key: string]: T;
+  [key: string]: T | undefined;
   url: T;
+  since?: T;
 }
 
 interface FormErrors extends FormData<boolean> {}
 export interface FormValues extends FormData<string> {}
+
+const errorMessages: FormData<string> = {
+  url: 'This does not look like a valid URL to a GitHub repository :/',
+  since: "The 'Since' date can't be in the future"
+}
 
 const GitHubUrlForm: React.FC = () => {
   const [checkedValidation, setCheckedValidation] = useState<boolean>(false);
@@ -23,19 +30,28 @@ const GitHubUrlForm: React.FC = () => {
     const parts = path.split('/');
 
     return parts.length === 2 && !parts.some(p => !p);
-  }
+  };
+
+  const isValidSinceDate: (dateString: string | undefined) => boolean = (dateString) => {
+    return dateString ? Date.now() >= Date.parse(dateString) : true;
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;
-    const inputElement = form[0] as HTMLInputElement;
-    const repoPath = inputElement.value;
+    const urlInputElement = form[0] as HTMLInputElement;
+    const sinceInputElement = form[1] as HTMLInputElement;
+    const repoPath = urlInputElement.value;
+    const sinceDate = sinceInputElement.value;
 
     const isFormValid = form.checkValidity();
 
     // Use all validation functions here
     const formErrors: FormErrors = { 
-      url: !isValidGithubRepoUrl(repoPath) 
+      url: !isValidGithubRepoUrl(repoPath),
+      since: !isValidSinceDate(sinceDate)
     };
+
+    console.log(formErrors);
 
     setErrors(formErrors);
     event.preventDefault();
@@ -58,6 +74,22 @@ const GitHubUrlForm: React.FC = () => {
     setErrors({...errors, url: !isValidGithubRepoUrl(repoPath)});
   };
 
+  const handleSinceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const dateString = event.currentTarget.value;
+    setValues({...values, since: dateString});
+
+    setErrors({...errors, since: !isValidSinceDate(dateString)});
+  };
+
+  const getErrorMessages: () => string[] = () => {
+    const result: string[] = [];
+    Object.keys(errorMessages).forEach(key => {
+      if (errors[key]) result.push(errorMessages[key] || '')
+    })
+
+    return result;
+  }
+
   return (
     <>
       <Form noValidate onSubmit={(event) => handleSubmit(event)}>
@@ -77,6 +109,17 @@ const GitHubUrlForm: React.FC = () => {
               isInvalid={checkedValidation && errors.url}
               disabled={submitted && !response}
               />
+            <InputGroup.Text id="basic-addon1">
+              Since
+            </InputGroup.Text>
+            <FormControl  
+              type='date'
+              value={values.since || ''}
+              onChange={handleSinceChange}
+              isInvalid={checkedValidation && errors.since}
+              disabled={submitted && !response}
+              max={new Date().toISOString().slice(0, 10)}
+              />
             <Button
               variant="primary"
               id="button-addon2"
@@ -85,7 +128,7 @@ const GitHubUrlForm: React.FC = () => {
             >
               Generate
             </Button>
-            <Form.Control.Feedback type='invalid'>This does not look like a valid URL to a GitHub repository :/</Form.Control.Feedback>
+            {getErrorMessages().map(message => <Form.Control.Feedback type='invalid' key={message}>{message}</Form.Control.Feedback>)}
           </InputGroup>
       </Form>
 
