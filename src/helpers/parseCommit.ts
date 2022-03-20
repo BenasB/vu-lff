@@ -1,6 +1,12 @@
 import { Commit, LFFEntry } from "../components/ResponseDataHandler";
 import CONSTANTS from "./constants";
+import getTimeString from "./getTimeString";
 import parse, { BrackedParseData } from "./parser";
+
+interface Disturbance {
+  time: number;
+  reason: string;
+}
 
 const parseActivity: (message: string) => string | undefined = (message) => {
   const parts = message.split('\n');
@@ -22,6 +28,22 @@ const parseStartDate: (bracketData: BrackedParseData[], commit: Commit) => Date 
   return result;
 }
 
+const parseDisturbances: (bracketData: BrackedParseData[]) => Disturbance[] = (bracketData) => {
+  let results: Disturbance[] = [];
+  
+  for(const data of bracketData) {
+    if (data.name !== 'DISTURBANCE') continue;
+
+    if (data.arguments.length === 2)
+      results.push({
+        time: Date.parse('1970-01-01T' + data.arguments[0] + 'Z'),
+        reason: data.arguments[1]
+      })
+  }
+
+  return results;
+}
+
 const parseComments: (message: string, bracketData: BrackedParseData[]) => string | undefined = (message, bracketData) => {
   const parts = message.split('\n').filter(p => p.length !== 0);  
   return parts.slice(1).join(' ');
@@ -36,18 +58,19 @@ const parseCommit: (commit: Commit, previousCommit: Commit | null) => LFFEntry =
 
   const notDeterminedMark = '?';
   const notParsedMark = '?';
-  const fromDate: Date | undefined = parseStartDate(bracketData, commit) || previousCommit?.date || undefined; // TODO: Implement parsing <START=DATE;XX:XX>
+  const fromDate: Date | undefined = parseStartDate(bracketData, commit) || previousCommit?.date || undefined;
   const toDate: Date = commit.date;
-  const disturbanceTime: number = 0; // TODO: implement this parsing
+  const disturbances: Disturbance[] = parseDisturbances(bracketData);
+  const totalDisturbanceTime: number = disturbances.reduce<number>((all, curr) => all += curr.time, 0);
 
   const entry: LFFEntry = {
     date: fromDate && fromDate.getDate() !== toDate.getDate() ? 
       `${fromDate.toLocaleDateString(CONSTANTS.LOCALE)} - ${toDate.toLocaleDateString(CONSTANTS.LOCALE)}` 
       : toDate.toLocaleDateString(CONSTANTS.LOCALE),
-    from: fromDate ? fromDate.toLocaleTimeString(CONSTANTS.LOCALE, {hour: '2-digit', minute:'2-digit'}) : notDeterminedMark,
-    to: toDate.toLocaleTimeString(CONSTANTS.LOCALE, {hour: '2-digit', minute:'2-digit'}),
-    disturbances: disturbanceTime.toString(),
-    time: fromDate ? new Date(toDate.getTime() - fromDate.getTime() - disturbanceTime).toISOString().slice(11, 16) : notDeterminedMark,
+    from: fromDate ? getTimeString(fromDate) : notDeterminedMark,
+    to: getTimeString(toDate),
+    disturbances: new Date(totalDisturbanceTime).toISOString().slice(11, 16),
+    time: fromDate ? new Date(toDate.getTime() - fromDate.getTime() - totalDisturbanceTime).toISOString().slice(11, 16) : notDeterminedMark,
     activity: parseActivity(messageWithoutBracketData) || notParsedMark,
     comments: parseComments(messageWithoutBracketData, bracketData),
   }
