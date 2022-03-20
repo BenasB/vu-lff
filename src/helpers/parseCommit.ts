@@ -21,9 +21,9 @@ const parseStartDate: (bracketData: BrackedParseData[], commit: Commit) => Date 
     if (data.name !== 'START') continue;
 
     if (data.arguments.length === 1)
-      result = new Date(`${commit.date.toLocaleDateString(CONSTANTS.LOCALE)}T${data.arguments[0]}`);
+      result = new Date(`${commit.date.toLocaleDateString(CONSTANTS.LOCALE)}T${data.arguments[0].padStart(5, '0')}`);
     else if (data.arguments.length === 2)
-      result = new Date(`${data.arguments[0]}T${data.arguments[1]}`);
+      result = new Date(`${data.arguments[0]}T${data.arguments[1].padStart(5, '0')}`);
   }
 
   return result;
@@ -37,7 +37,7 @@ const parseDisturbances: (bracketData: BrackedParseData[]) => Disturbance[] = (b
 
     if (data.arguments.length === 2)
       results.push({
-        duration: Date.parse('1970-01-01T' + data.arguments[0] + 'Z'),
+        duration: Date.parse('1970-01-01T' + data.arguments[0].padStart(5, '0') + 'Z'),
         reason: data.arguments[1]
       })
   }
@@ -60,6 +60,7 @@ const parseCommit: (commit: Commit, previousCommit: Commit | null) => LFFEntry =
   const notDeterminedMark = '?';
   const notParsedMark = '?';
   const fromDate: Date | undefined = parseStartDate(bracketData, commit) || previousCommit?.date || undefined;
+  console.log(fromDate);
   const toDate: Date = commit.date;
   const disturbances: Disturbance[] = parseDisturbances(bracketData);
   const totalDisturbanceTime: number = disturbances.reduce<number>((all, curr) => all += curr.duration, 0);
