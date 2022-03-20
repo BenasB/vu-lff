@@ -1,6 +1,7 @@
 {
   "name": "vu-lff",
   "version": "0.1.0",
+  "homepage": "/vu-lff/",
   "private": true,
   "dependencies": {
     "@octokit/core": "^3.5.1",
