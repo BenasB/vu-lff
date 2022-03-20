@@ -55,7 +55,7 @@ const FAQ: React.FC = () => {
               <li>Your repository is public</li>
               <li>You have commits starting with <code>LFF:</code></li>
               <li>You haven't ran out of requests (60 per hour)</li>
-              <li>You are expecting over 100 commits (which is the limit to <code>per_page</code> GitHub REST API query argument)</li>
+              <li>You aren't expecting over 100 commits (which is the limit to <code>per_page</code> GitHub REST API query argument)</li>
             </ol>
           </Accordion.Body>
         </Accordion.Item>
