@@ -3,6 +3,7 @@ import { ResponseData } from '../helpers/getRepoData';
 import isLFFMessage from '../helpers/isLFFMessage';
 import parseCommit from '../helpers/parseCommit';
 import CommitTable from './CommitTable';
+import MarkdownButton from './MarkdownButton';
 
 export interface Commit {
   message: string;
@@ -45,6 +46,7 @@ const ResponseDataHandler: React.FC<ResponseData> = (response) => {
   return (
     <>
       <CommitTable entries={entries}/>
+      <MarkdownButton entries={entries}/>
     </>
   )
 }
