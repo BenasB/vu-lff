@@ -9,7 +9,7 @@ const FAQ: React.FC = () => {
         <Accordion.Item eventKey="0">
           <Accordion.Header>What's an LLF?</Accordion.Header>
           <Accordion.Body>
-            An LFF is an acronym for the Lithuanian <i>Laiko Fiksavimo Forma</i> which translates to <i>Time Tracking Form</i>. This document keeps track of your progress while doing a programming task and is required for some module tasks at Vilnius University.
+            LFF is an acronym for the Lithuanian <i>Laiko Fiksavimo Forma</i> which translates to <i>Time Tracking Form</i>. This document keeps track of your progress while doing a programming task and is required for some module tasks at Vilnius University.
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="1">
