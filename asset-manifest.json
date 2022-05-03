@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/vu-lff/static/css/main.e6c13ad2.css",
-    "main.js": "/vu-lff/static/js/main.56c8736f.js",
+    "main.js": "/vu-lff/static/js/main.52e00bf9.js",
     "index.html": "/vu-lff/index.html",
     "static/media/logo.svg": "/vu-lff/static/media/logo.5f88137875a0a2236881ecb2c3a6c6fc.svg",
     "main.e6c13ad2.css.map": "/vu-lff/static/css/main.e6c13ad2.css.map",
-    "main.56c8736f.js.map": "/vu-lff/static/js/main.56c8736f.js.map"
+    "main.52e00bf9.js.map": "/vu-lff/static/js/main.52e00bf9.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.56c8736f.js"
+    "static/js/main.52e00bf9.js"
   ]
 }
