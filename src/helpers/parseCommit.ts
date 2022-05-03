@@ -60,7 +60,6 @@ const parseCommit: (commit: Commit, previousCommit: Commit | null) => LFFEntry =
   const notDeterminedMark = '?';
   const notParsedMark = '?';
   const fromDate: Date | undefined = parseStartDate(bracketData, commit) || previousCommit?.date || undefined;
-  console.log(fromDate);
   const toDate: Date = commit.date;
   const disturbances: Disturbance[] = parseDisturbances(bracketData);
   const totalDisturbanceTime: number = disturbances.reduce<number>((all, curr) => all += curr.duration, 0);
