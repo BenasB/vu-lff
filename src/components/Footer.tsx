@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
   return (
     <Navbar fixed='bottom' variant='dark' bg='dark'>
       <Container>
-        <Navbar.Brand href="https://bx2.tech" >
+        <Navbar.Brand href="https://benasb.github.io" >
           <Logo width={58} height={24}/>
         </Navbar.Brand>
         <Navbar.Toggle />
