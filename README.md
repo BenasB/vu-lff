@@ -1,7 +1,6 @@
 # VU-LFF
 
-Time tracking Vilnius University progra
-ming tasks from git commits
+Time tracking Vilnius University programming tasks from git commits
 
 View it [here](https://benasb.github.io/vu-lff/)
 
